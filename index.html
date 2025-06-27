@@ -1,109 +1,114 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <title>kazu XX</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-      body {
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f9f9f9;
-      }
-      .header {
-        background: linear-gradient(to right, #6a11cb, #2575fc);
-        color: white;
-        padding: 30px 20px;
-        text-align: center;
-        font-size: 2em;
-        font-weight: bold;
-      }
-      .description {
-        text-align: center;
-        font-size: 1rem;
-        color: #333;
-        padding: 15px 20px 30px;
-        line-height: 1.6;
-      }
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 20px;
-        padding: 0 20px 40px;
-      }
-      .card {
-        background: white;
-        border-radius: 12px;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        position: relative;
-      }
-      .post {
-        white-space: pre-line;
-        font-size: 15px;
-        color: #333;
-      }
-      .copy-btn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 12px;
-        padding: 6px 12px;
-        background: #6a11cb;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-      }
-      .copy-btn:hover {
-        background: #4e0fa3;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="header">kazu XX</div>
-    <div class="description">
-      仕組みで拡散を加速する、投稿テンプレート自動生成システム。<br>
-      スプレッドシートから即座に表示・コピーが可能。
-    </div>
-    <div id="grid" class="grid"></div>
+<head>
+  <meta charset="UTF-8" />
+  <title>kazu XX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .header {
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 2em;
+      font-weight: bold;
+    }
+    .description {
+      text-align: center;
+      font-size: 1rem;
+      color: #333;
+      padding: 15px 20px 30px;
+      line-height: 1.6;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 0 20px 40px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    .post {
+      white-space: pre-line;
+      font-size: 15px;
+      color: #333;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 12px;
+      padding: 6px 12px;
+      background: #6a11cb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .copy-btn:hover {
+      background: #4e0fa3;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">kazu XX</div>
+  <div class="description">
+    仕組みで拡散を加速する、投稿テンプレート自動生成システム。<br />
+    スプレッドシートから即時反映＆コピー可能。
+  </div>
+  <div id="grid" class="grid"></div>
 
-    <script>
-      function createCard(text) {
-        const card = document.createElement("div");
-        card.className = "card";
+  <script>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbylLVQxECDH_83bNB3Nojyruqa2dYvFQ8uae9jjcnsCnZzNK_AEIkFUk3e5SUSlGXVg/exec";
 
-        const post = document.createElement("div");
-        post.className = "post";
-        post.innerText = text;
+    function createCard(text) {
+      const card = document.createElement("div");
+      card.className = "card";
 
-        const button = document.createElement("button");
-        button.className = "copy-btn";
-        button.innerText = "コピー";
-        button.onclick = () => {
-          navigator.clipboard.writeText(text).then(() => {
-            button.innerText = "コピー済！";
-            setTimeout(() => button.innerText = "コピー", 2000);
-          });
-        };
+      const post = document.createElement("div");
+      post.className = "post";
+      post.innerText = text;
 
-        card.appendChild(post);
-        card.appendChild(button);
-        return card;
-      }
+      const button = document.createElement("button");
+      button.className = "copy-btn";
+      button.innerText = "コピー";
+      button.onclick = () => {
+        navigator.clipboard.writeText(text).then(() => {
+          button.innerText = "コピー済！";
+          setTimeout(() => button.innerText = "コピー", 2000);
+        });
+      };
 
-      function renderPosts(posts) {
-        const grid = document.getElementById("grid");
-        posts.forEach(text => grid.appendChild(createCard(text)));
-      }
+      card.appendChild(post);
+      card.appendChild(button);
+      return card;
+    }
 
-      // GAS連携（ここに公開済みURL）
-      fetch("https://script.google.com/macros/s/AKfycbww8hMRGW2o8t7bDpNG2GbttyFAf_WhIoxaaT0IyL09q-GFxOQfzSFE0lItMyqSm88o0w/exec")
-        .then(res => res.json())
-        .then(data => renderPosts(data))
-        .catch(err => console.error("取得失敗:", err));
-    </script>
-  </body>
+    function renderPosts(posts) {
+      const grid = document.getElementById("grid");
+      posts.forEach(text => grid.appendChild(createCard(text)));
+    }
+
+    fetch(GAS_URL)
+      .then(response => response.json())
+      .then(data => renderPosts(data))
+      .catch(error => {
+        document.getElementById("grid").innerHTML =
+          "<p style='color:red;'>投稿の読み込みに失敗しました。</p>";
+        console.error("投稿取得エラー:", error);
+      });
+  </script>
+</body>
 </html>
